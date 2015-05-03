@@ -1,40 +1,17 @@
 # Source code files
 set(SOURCE_FILES
 	mavlinkserver.cpp
+	autopilot_interface.cpp
+	serial_port.cpp
 )
-
-set(serial_SRCS
-	serial/src/serial.cc
-	serial/include/serial/serial.h
-	serial/include/serial/v8stdint.h
-)
-if(UNIX)
-	list(APPEND serial_SRCS
-		serial/src/impl/unix.cc
-		serial/src/impl/list_ports/list_ports_linux.cc
-	)
-else()
-	list(APPEND serial_SRCS
-		serial/src/impl/win.cc
-		serial/src/impl/list_ports/list_ports_win.cc
-	)
-endif()
 
 # Include headers from this paths
 include_directories(
 	${INTERFACES_CPP_DIR}
 	${LIBS_DIR}
 	${CMAKE_CURRENT_SOURCE_DIR}
-	serial/include
 	mavlink
 )
-
-add_library(serial SHARED
-	${serial_SRCS}
-)
-
-set_property(TARGET serial PROPERTY SOVERSION 1.2.0)
-
 
 # Executable name and its dependencies
 add_executable(mavlinkserver
@@ -43,8 +20,8 @@ add_executable(mavlinkserver
 
 # Needed libraries
 target_link_libraries(mavlinkserver
-	serial
 	JderobotInterfaces
+	pthread
 	${ZeroCIce_LIBRARIES}
 )
 
