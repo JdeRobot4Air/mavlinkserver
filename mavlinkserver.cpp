@@ -111,66 +111,68 @@ int run(int argc, char **argv)
     test_string = "Testing.";
   }
 
-  // Test the timeout, there should be 1 second between prints
-  cout << "Timeout == 1000ms, asking for 1 more byte than written." << endl;
-  while (count < 10) {
-    size_t bytes_wrote = my_serial.write(test_string);
 
-    string result = my_serial.read(test_string.length()+1);
+  uint8_t cp;
+  mavlink_status_t status, lastStatus;
+  uint8_t msgReceived = false;
+  mavlink_message_t message;
 
-    cout << "Iteration: " << count << ", Bytes written: ";
-    cout << bytes_wrote << ", Bytes read: ";
-    cout << result.length() << ", String read: " << result << endl;
-
-    count += 1;
-  }
-
-  // Test the timeout at 250ms
-  my_serial.setTimeout(serial::Timeout::max(), 250, 0, 250, 0);
+  // Test the timeout at 500ms
+  my_serial.setTimeout(serial::Timeout::max(), 500, 0, 500, 0);
   count = 0;
-  cout << "Timeout == 250ms, asking for 1 more byte than written." << endl;
-  while (count < 10) {
-    size_t bytes_wrote = my_serial.write(test_string);
+  cout << "Timeout == 500ms." << endl;
+  while (true) {
+    int result = my_serial.read(&cp, 1);
+    if (result > 0) {
+      // the parsing
+      msgReceived = mavlink_parse_char(MAVLINK_COMM_1, cp, &message, &status);
+      // check for dropped packets
+      if ((lastStatus.packet_rx_drop_count != status.packet_rx_drop_count)) {
+        printf("ERROR: DROPPED %d PACKETS\n", status.packet_rx_drop_count);
+        unsigned char v = cp;
+        fprintf(stderr, "%02x ", v);
+      }
+      lastStatus = status;
+    } else {
+      fprintf(stderr, "ERROR (or 500ms timeout)\n");
+    }
+    if (msgReceived) {
+      // Report info
+      printf("Received message from serial with ID #%d (sys:%d|comp:%d):\n",
+             message.msgid, message.sysid, message.compid);
 
-    string result = my_serial.read(test_string.length()+1);
+      fprintf(stderr, "Received serial data: ");
+      unsigned int i;
+      uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
 
-    cout << "Iteration: " << count << ", Bytes written: ";
-    cout << bytes_wrote << ", Bytes read: ";
-    cout << result.length() << ", String read: " << result << endl;
+      // check message is write length
+      unsigned int messageLength = mavlink_msg_to_send_buffer(buffer, &message);
 
-    count += 1;
+      // message length error
+      if (messageLength > MAVLINK_MAX_PACKET_LEN) {
+        fprintf(stderr,
+                "\nFATAL ERROR: MESSAGE LENGTH IS LARGER THAN BUFFER SIZE\n");
+      }
+
+      // print out the buffer
+      else {
+        for (i = 0; i < messageLength; i++) {
+          unsigned char v = buffer[i];
+          fprintf(stderr, "%02x ", v);
+        }
+        fprintf(stderr, "\n");
+      }
+      switch (message.msgid)
+      {
+
+        case MAVLINK_MSG_ID_HEARTBEAT:
+        {
+          printf("MAVLINK_MSG_ID_HEARTBEAT\n");
+          break;
+        }
+      }
+    }
   }
-
-  // Test the timeout at 250ms, but asking exactly for what was written
-  count = 0;
-  cout << "Timeout == 250ms, asking for exactly what was written." << endl;
-  while (count < 10) {
-    size_t bytes_wrote = my_serial.write(test_string);
-
-    string result = my_serial.read(test_string.length());
-
-    cout << "Iteration: " << count << ", Bytes written: ";
-    cout << bytes_wrote << ", Bytes read: ";
-    cout << result.length() << ", String read: " << result << endl;
-
-    count += 1;
-  }
-
-  // Test the timeout at 250ms, but asking for 1 less than what was written
-  count = 0;
-  cout << "Timeout == 250ms, asking for 1 less than was written." << endl;
-  while (count < 10) {
-    size_t bytes_wrote = my_serial.write(test_string);
-
-    string result = my_serial.read(test_string.length()-1);
-
-    cout << "Iteration: " << count << ", Bytes written: ";
-    cout << bytes_wrote << ", Bytes read: ";
-    cout << result.length() << ", String read: " << result << endl;
-
-    count += 1;
-  }
-
   return 0;
 }
 
