@@ -1,6 +1,6 @@
 # Source code files
 set(SOURCE_FILES
-	serial/examples/serial_example.cc
+	mavlinkserver.cpp
 )
 
 set(serial_SRCS
@@ -26,6 +26,7 @@ include_directories(
 	${LIBS_DIR}
 	${CMAKE_CURRENT_SOURCE_DIR}
 	serial/include
+	mavlink
 )
 
 add_library(serial SHARED
