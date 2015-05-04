@@ -52,8 +52,9 @@
 //   Includes
 // ------------------------------------------------------------------------------
 
-#include "autopilot_interface.h"
+#include <iostream>
 
+#include "autopilot_interface.h"
 
 // ----------------------------------------------------------------------------------
 //   Time
@@ -264,7 +265,7 @@ read_messages()
 
 				case MAVLINK_MSG_ID_HEARTBEAT:
 				{
-					printf("MAVLINK_MSG_ID_HEARTBEAT\n");
+					std::cout << "MAVLINK_MSG_ID_HEARTBEAT" << std::endl;
 					mavlink_msg_heartbeat_decode(&message, &(current_messages.heartbeat));
 					current_messages.time_stamps.heartbeat = get_time_usec();
 					this_timestamps.heartbeat = current_messages.time_stamps.heartbeat;
@@ -273,7 +274,7 @@ read_messages()
 
 				case MAVLINK_MSG_ID_SYS_STATUS:
 				{
-					printf("MAVLINK_MSG_ID_SYS_STATUS\n");
+					std::cout << "MAVLINK_MSG_ID_SYS_STATUS" << std::endl;
 					mavlink_msg_sys_status_decode(&message, &(current_messages.sys_status));
 					current_messages.time_stamps.sys_status = get_time_usec();
 					this_timestamps.sys_status = current_messages.time_stamps.sys_status;
@@ -282,7 +283,7 @@ read_messages()
 
 				case MAVLINK_MSG_ID_BATTERY_STATUS:
 				{
-					printf("MAVLINK_MSG_ID_BATTERY_STATUS\n");
+					std::cout << "MAVLINK_MSG_ID_BATTERY_STATUS" << std::endl;
 					mavlink_msg_battery_status_decode(&message, &(current_messages.battery_status));
 					current_messages.time_stamps.battery_status = get_time_usec();
 					this_timestamps.battery_status = current_messages.time_stamps.battery_status;
@@ -291,7 +292,7 @@ read_messages()
 
 				case MAVLINK_MSG_ID_RADIO_STATUS:
 				{
-					printf("MAVLINK_MSG_ID_RADIO_STATUS\n");
+					std::cout << "MAVLINK_MSG_ID_RADIO_STATUS" << std::endl;
 					mavlink_msg_radio_status_decode(&message, &(current_messages.radio_status));
 					current_messages.time_stamps.radio_status = get_time_usec();
 					this_timestamps.radio_status = current_messages.time_stamps.radio_status;
@@ -300,7 +301,7 @@ read_messages()
 
 				case MAVLINK_MSG_ID_LOCAL_POSITION_NED:
 				{
-					printf("MAVLINK_MSG_ID_LOCAL_POSITION_NED\n");
+					std::cout << "MAVLINK_MSG_ID_LOCAL_POSITION_NED" << std::endl;
 					mavlink_msg_local_position_ned_decode(&message, &(current_messages.local_position_ned));
 					current_messages.time_stamps.local_position_ned = get_time_usec();
 					this_timestamps.local_position_ned = current_messages.time_stamps.local_position_ned;
@@ -309,7 +310,7 @@ read_messages()
 
 				case MAVLINK_MSG_ID_GLOBAL_POSITION_INT:
 				{
-					printf("MAVLINK_MSG_ID_GLOBAL_POSITION_INT\n");
+					std::cout << "MAVLINK_MSG_ID_GLOBAL_POSITION_INT" << std::endl;
 					mavlink_msg_global_position_int_decode(&message, &(current_messages.global_position_int));
 					current_messages.time_stamps.global_position_int = get_time_usec();
 					this_timestamps.global_position_int = current_messages.time_stamps.global_position_int;
@@ -318,7 +319,7 @@ read_messages()
 
 				case MAVLINK_MSG_ID_POSITION_TARGET_LOCAL_NED:
 				{
-					printf("MAVLINK_MSG_ID_POSITION_TARGET_LOCAL_NED\n");
+					std::cout << "MAVLINK_MSG_ID_POSITION_TARGET_LOCAL_NED" << std::endl;
 					mavlink_msg_position_target_local_ned_decode(&message, &(current_messages.position_target_local_ned));
 					current_messages.time_stamps.position_target_local_ned = get_time_usec();
 					this_timestamps.position_target_local_ned = current_messages.time_stamps.position_target_local_ned;
@@ -327,7 +328,7 @@ read_messages()
 
 				case MAVLINK_MSG_ID_POSITION_TARGET_GLOBAL_INT:
 				{
-					printf("MAVLINK_MSG_ID_POSITION_TARGET_GLOBAL_INT\n");
+					std::cout << "MAVLINK_MSG_ID_POSITION_TARGET_GLOBAL_INT" << std::endl;
 					mavlink_msg_position_target_global_int_decode(&message, &(current_messages.position_target_global_int));
 					current_messages.time_stamps.position_target_global_int = get_time_usec();
 					this_timestamps.position_target_global_int = current_messages.time_stamps.position_target_global_int;
@@ -336,7 +337,7 @@ read_messages()
 
 				case MAVLINK_MSG_ID_HIGHRES_IMU:
 				{
-					printf("MAVLINK_MSG_ID_HIGHRES_IMU\n");
+					std::cout << "MAVLINK_MSG_ID_HIGHRES_IMU" << std::endl;
 					mavlink_msg_highres_imu_decode(&message, &(current_messages.highres_imu));
 					current_messages.time_stamps.highres_imu = get_time_usec();
 					this_timestamps.highres_imu = current_messages.time_stamps.highres_imu;
@@ -345,7 +346,7 @@ read_messages()
 
 				case MAVLINK_MSG_ID_ATTITUDE:
 				{
-					printf("MAVLINK_MSG_ID_ATTITUDE\n");
+					std::cout << "MAVLINK_MSG_ID_ATTITUDE" << std::endl;
 					mavlink_msg_attitude_decode(&message, &(current_messages.attitude));
 					current_messages.time_stamps.attitude = get_time_usec();
 					this_timestamps.attitude = current_messages.time_stamps.attitude;
@@ -354,7 +355,7 @@ read_messages()
 
 				case MAVLINK_MSG_ID_DEBUG:
 				{
-					printf("MAVLINK_MSG_ID_DEBUG\n");
+					std::cout << "MAVLINK_MSG_ID_DEBUG" << std::endl;
 /*					mavlink_msg_debug_decode(&message, &(current_messages.attitude));
 					current_messages.time_stamps.attitude = get_time_usec();
 					this_timestamps.attitude = current_messages.time_stamps.attitude;*/
@@ -363,7 +364,7 @@ read_messages()
 
 				case MAVLINK_MSG_ID_STATUSTEXT:
 				{
-					printf("MAVLINK_MSG_ID_STATUSTEXT: ");
+					std::cout << "MAVLINK_MSG_ID_STATUSTEXT: ";
 					mavlink_msg_statustext_decode(&message, &(current_messages.statustext));
           current_messages.statustext.text[50] = 0;
           printf("%d - '%s'\n", current_messages.statustext.severity, current_messages.statustext.text);
@@ -375,12 +376,20 @@ read_messages()
 
 				case MAVLINK_MSG_ID_RAW_IMU:
 				{
-					printf("MAVLINK_MSG_ID_RAW_IMU:\n");
+					std::cout << "MAVLINK_MSG_ID_RAW_IMU:" << std::endl;
 					mavlink_msg_raw_imu_decode(&message, &(current_messages.raw_imu));
-printf ("xacc: %" PRId16 "\n", current_messages.raw_imu.xacc);
-					printf("\tacc :\t%" PRId16 "\t%" PRId16 "\t%" PRId16 "\n", current_messages.raw_imu.xacc, current_messages.raw_imu.yacc, current_messages.raw_imu.zacc);
-					printf("\tgyro:\t%" PRId16 "\t%" PRId16 "\t%" PRId16 "\n", current_messages.raw_imu.xgyro, current_messages.raw_imu.ygyro, current_messages.raw_imu.zgyro);
-					printf("\tmag :\t%" PRId16 "\t%" PRId16 "\t%" PRId16 "\n", current_messages.raw_imu.xmag, current_messages.raw_imu.ymag, current_messages.raw_imu.zmag);
+					std::cout << "\tacc :\t" << current_messages.raw_imu.xacc <<
+						"\t" << current_messages.raw_imu.yacc <<
+						"\t" << current_messages.raw_imu.zacc <<
+						std::endl;
+					std::cout << "\tgyro:\t" << current_messages.raw_imu.xgyro <<
+						"\t" << current_messages.raw_imu.ygyro <<
+						"\t" << current_messages.raw_imu.zgyro <<
+						std::endl;
+					std::cout << "\tmag:\t" << current_messages.raw_imu.xmag <<
+						"\t" << current_messages.raw_imu.ymag <<
+						"\t" << current_messages.raw_imu.zmag <<
+						std::endl;
 
 /*msg_request_data_stream req = new msg_request_data_stream();
                 req.req_message_rate = 20;
@@ -394,7 +403,7 @@ printf ("xacc: %" PRId16 "\n", current_messages.raw_imu.xacc);
 
 /*				case MAVLINK_MSG_ID_RAW_IMU:
 				{
-					printf("MAVLINK_MSG_ID_RAW_IMU:\n");
+					std::cout << "MAVLINK_MSG_ID_RAW_IMU:" << std::endl;
 					mavlink_msg_raw_imu_decode(&message, &(current_messages.raw_imu));
 printf ("xacc: %" PRId16 "\n", current_messages.raw_imu.xacc);
 					printf("Got message HIGHRES_IMU (spec: https://pixhawk.ethz.ch/mavlink/#HIGHRES_IMU)\n");
