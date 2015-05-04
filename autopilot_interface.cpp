@@ -368,11 +368,10 @@ read_messages()
 					mavlink_msg_statustext_decode(&message, &(current_messages.statustext));
           current_messages.statustext.text[50] = 0;
           printf("%d - '%s'\n", current_messages.statustext.severity, current_messages.statustext.text);
-					//current_messages.time_stamps.statustext = get_time_usec();
-					//this_timestamps.attitude = current_messages.time_stamps.attitude;*/
+					current_messages.time_stamps.statustext = get_time_usec();
+					this_timestamps.statustext = current_messages.time_stamps.statustext;
 					break;
 				}
-//RAW_IMU
 
 				case MAVLINK_MSG_ID_RAW_IMU:
 				{
@@ -401,18 +400,31 @@ read_messages()
 					break;
 				}
 
-/*				case MAVLINK_MSG_ID_RAW_IMU:
+				case MAVLINK_MSG_ID_GPS_RAW_INT:
 				{
-					std::cout << "MAVLINK_MSG_ID_RAW_IMU:" << std::endl;
-					mavlink_msg_raw_imu_decode(&message, &(current_messages.raw_imu));
-printf ("xacc: %" PRId16 "\n", current_messages.raw_imu.xacc);
-					printf("Got message HIGHRES_IMU (spec: https://pixhawk.ethz.ch/mavlink/#HIGHRES_IMU)\n");
-					printf("\t time: %llu\n", imu.time_usec);
-					printf("\t acc  (NED):\t% f\t% f\t% f (m/s^2)\n", imu.xacc, imu.yacc, imu.zacc);
-					printf("\t gyro (NED):\t% f\t% f\t% f (rad/s)\n", imu.xgyro, imu.ygyro, imu.zgyro);
-					printf("\t mag  (NED):\t% f\t% f\t% f (Ga)\n", imu.xmag, imu.ymag, imu.zmag);
+					std::cout << "MAVLINK_MSG_ID_GPS_RAW_INT:" << std::endl;
+					mavlink_msg_gps_raw_int_decode(&message, &(current_messages.gps_raw_int));
+					current_messages.time_stamps.gps_raw_int = get_time_usec();
+					this_timestamps.gps_raw_int = current_messages.time_stamps.gps_raw_int;
+					std::cout <<
+						"\tlat: " << current_messages.gps_raw_int.lat <<
+						"\tlon: " << current_messages.gps_raw_int.lon <<
+						"\talt: " << current_messages.gps_raw_int.alt <<
+						std::endl;
+					std::cout <<
+						"\teph: " << current_messages.gps_raw_int.eph <<
+						"\tepv: " << current_messages.gps_raw_int.epv <<
+						std::endl;
+					std::cout <<
+						"\tvel: " << current_messages.gps_raw_int.vel <<
+						"\tcog: " << current_messages.gps_raw_int.cog <<
+						std::endl;
+					std::cout <<
+						"\tfix: " << (int)current_messages.gps_raw_int.fix_type <<
+						"\tsat: " << (int)current_messages.gps_raw_int.satellites_visible <<
+						std::endl;
 					break;
-				}*/
+				}
 
 				default:
 				{

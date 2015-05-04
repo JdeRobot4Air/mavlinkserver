@@ -149,6 +149,10 @@ struct Time_Stamps
 	uint64_t position_target_global_int;
 	uint64_t highres_imu;
 	uint64_t attitude;
+	// New in mavlinkserver
+	uint64_t statustext;
+	uint64_t raw_imu;
+	uint64_t gps_raw_int;
 
 	void
 	reset_timestamps()
@@ -163,6 +167,9 @@ struct Time_Stamps
 		position_target_global_int = 0;
 		highres_imu = 0;
 		attitude = 0;
+		statustext = 0;
+		raw_imu = 0;
+		gps_raw_int = 0;
 	}
 
 };
@@ -207,8 +214,11 @@ struct Mavlink_Messages {
 
 	// System Parameters?
 	mavlink_debug_t debug;
+
+  // New implemented messages to mavlinkserver
   mavlink_statustext_t statustext;
   mavlink_raw_imu_t raw_imu;
+  mavlink_gps_raw_int_t gps_raw_int;
 
 	// Time Stamps
 	Time_Stamps time_stamps;
