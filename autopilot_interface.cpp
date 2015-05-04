@@ -426,6 +426,29 @@ read_messages()
 					break;
 				}
 
+				case MAVLINK_MSG_ID_NAV_CONTROLLER_OUTPUT:
+				{
+					std::cout << "MAVLINK_MSG_ID_NAV_CONTROLLER_OUTPUT:" << std::endl;
+					mavlink_msg_nav_controller_output_decode(&message, &(current_messages.nav_controller_output));
+					current_messages.time_stamps.nav_controller_output = get_time_usec();
+					this_timestamps.nav_controller_output = current_messages.time_stamps.nav_controller_output;
+					std::cout <<
+						"\tnav_roll: " << current_messages.nav_controller_output.nav_roll <<
+						"\tnav_pitch: " << current_messages.nav_controller_output.nav_pitch <<
+						"\tnav_bearing: " << current_messages.nav_controller_output.nav_bearing <<
+						std::endl;
+					std::cout <<
+						"\ttarget_bearing: " << current_messages.nav_controller_output.target_bearing <<
+						"\twp_dist: " << current_messages.nav_controller_output.wp_dist <<
+						std::endl;
+					std::cout <<
+						"\talt_error: " << current_messages.nav_controller_output.alt_error <<
+						"\taspd_error: " << current_messages.nav_controller_output.aspd_error <<
+						"\txtrack_error: " << current_messages.nav_controller_output.xtrack_error <<
+						std::endl;
+					break;
+				}
+
 				default:
 				{
 					printf("Warning, did not handle message id %i\n",message.msgid);

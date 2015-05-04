@@ -153,6 +153,7 @@ struct Time_Stamps
 	uint64_t statustext;
 	uint64_t raw_imu;
 	uint64_t gps_raw_int;
+	uint64_t nav_controller_output;
 
 	void
 	reset_timestamps()
@@ -170,6 +171,7 @@ struct Time_Stamps
 		statustext = 0;
 		raw_imu = 0;
 		gps_raw_int = 0;
+		nav_controller_output = 0;
 	}
 
 };
@@ -219,6 +221,7 @@ struct Mavlink_Messages {
   mavlink_statustext_t statustext;
   mavlink_raw_imu_t raw_imu;
   mavlink_gps_raw_int_t gps_raw_int;
+  mavlink_nav_controller_output_t nav_controller_output;
 
 	// Time Stamps
 	Time_Stamps time_stamps;
