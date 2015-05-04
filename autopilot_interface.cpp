@@ -389,14 +389,8 @@ read_messages()
 						"\t" << current_messages.raw_imu.ymag <<
 						"\t" << current_messages.raw_imu.zmag <<
 						std::endl;
-
-/*msg_request_data_stream req = new msg_request_data_stream();
-                req.req_message_rate = 20;
-                req.req_stream_id = MAVLink.MAV_DATA_STREAM.MAV_DATA_STREAM_ALL;
-                req.start_stop = 1;
-                req.target_system = MAVLink.CURRENT_SYSID;
-                req.target_component = 0;
-                sendBytesToComm( MAVLink.createMessage(req))*/
+					current_messages.time_stamps.raw_imu = get_time_usec();
+					this_timestamps.raw_imu = current_messages.time_stamps.raw_imu;
 					break;
 				}
 
@@ -675,7 +669,6 @@ start()
 	// now we're reading messages
 	printf("\n");
 
-
 	// --------------------------------------------------------------------------
 	//   CHECK FOR MESSAGES
 	// --------------------------------------------------------------------------
@@ -719,13 +712,30 @@ start()
 		printf("\n");
 	}
 
+////////////////////////////////////////////////////////////////////////////////
+mavlink_message_t message;
+mavlink_request_data_stream_t req;
+                req.req_message_rate = 1;
+                req.req_stream_id = MAV_DATA_STREAM_ALL;
+                //req.req_stream_id = MAV_DATA_STREAM_RAW_SENSORS;
+                req.start_stop = 1;
+                req.target_system = current_messages.sysid;
+                req.target_component = current_messages.compid;
+                mavlink_msg_request_data_stream_encode(system_id, companion_id, &message, &req);
+                // Send the message
+	int len = serial_port->write_message(message);
+////////////////////////////////////////////////////////////////////////////////
+                
+                
+
 
 	// --------------------------------------------------------------------------
 	//   GET INITIAL POSITION
 	// --------------------------------------------------------------------------
 
 	// Wait for initial position ned
-	while ( not ( current_messages.time_stamps.local_position_ned &&
+//	while ( not ( current_messages.time_stamps.local_position_ned &&
+	while ( not ( current_messages.time_stamps.raw_imu &&
 				  current_messages.time_stamps.attitude            )  )
 	{
 		if ( time_to_exit )
