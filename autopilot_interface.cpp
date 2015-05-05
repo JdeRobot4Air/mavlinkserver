@@ -274,7 +274,7 @@ read_messages()
 
 				case MAVLINK_MSG_ID_SYS_STATUS:
 				{
-					std::cout << "MAVLINK_MSG_ID_SYS_STATUS" << std::endl;
+					//std::cout << "MAVLINK_MSG_ID_SYS_STATUS" << std::endl;
 					mavlink_msg_sys_status_decode(&message, &(current_messages.sys_status));
 					current_messages.time_stamps.sys_status = get_time_usec();
 					this_timestamps.sys_status = current_messages.time_stamps.sys_status;
@@ -346,7 +346,7 @@ read_messages()
 
 				case MAVLINK_MSG_ID_ATTITUDE:
 				{
-					std::cout << "MAVLINK_MSG_ID_ATTITUDE" << std::endl;
+					//std::cout << "MAVLINK_MSG_ID_ATTITUDE" << std::endl;
 					mavlink_msg_attitude_decode(&message, &(current_messages.attitude));
 					current_messages.time_stamps.attitude = get_time_usec();
 					this_timestamps.attitude = current_messages.time_stamps.attitude;
@@ -474,6 +474,26 @@ read_messages()
 						"\tchan7_raw: " << current_messages.rc_channels_raw.chan7_raw <<
 						"\tchan8_raw: " << current_messages.rc_channels_raw.chan8_raw <<
 						"\trssi: " << (int)current_messages.rc_channels_raw.rssi <<
+						std::endl;
+					break;
+				}
+
+				case MAVLINK_MSG_ID_SERVO_OUTPUT_RAW:
+				{
+					std::cout << "MAVLINK_MSG_ID_SERVO_OUTPUT_RAW:" << std::endl;
+					mavlink_msg_servo_output_raw_decode(&message, &(current_messages.servo_output_raw));
+					current_messages.time_stamps.servo_output_raw = get_time_usec();
+					this_timestamps.servo_output_raw = current_messages.time_stamps.servo_output_raw;
+					std::cout <<
+						"\tport: " << (int)current_messages.servo_output_raw.port <<
+						"\tservo1_raw: " << current_messages.servo_output_raw.servo1_raw <<
+						"\tservo2_raw: " << current_messages.servo_output_raw.servo2_raw <<
+						"\tservo3_raw: " << current_messages.servo_output_raw.servo3_raw <<
+						"\tservo4_raw: " << current_messages.servo_output_raw.servo4_raw <<
+						"\tservo5_raw: " << current_messages.servo_output_raw.servo5_raw <<
+						"\tservo6_raw: " << current_messages.servo_output_raw.servo6_raw <<
+						"\tservo7_raw: " << current_messages.servo_output_raw.servo7_raw <<
+						"\tservo8_raw: " << current_messages.servo_output_raw.servo8_raw <<
 						std::endl;
 					break;
 				}
@@ -805,7 +825,8 @@ mavlink_request_data_stream_t req;
 	if ( result ) throw result;
 
 	// wait for it to be started
-	while ( not writing_status )
+//	while ( not writing_status )
+	while ( true )
 		usleep(100000); // 10Hz
 
 	// now we're streaming setpoint commands
