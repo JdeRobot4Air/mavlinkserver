@@ -443,6 +443,20 @@ read_messages()
 					break;
 				}
 
+				case MAVLINK_MSG_ID_SCALED_PRESSURE:
+				{
+					std::cout << "MAVLINK_MSG_ID_SCALED_PRESSURE:" << std::endl;
+					mavlink_msg_scaled_pressure_decode(&message, &(current_messages.scaled_pressure));
+					current_messages.time_stamps.scaled_pressure = get_time_usec();
+					this_timestamps.scaled_pressure = current_messages.time_stamps.scaled_pressure;
+					std::cout <<
+						"\tpress_abs: " << current_messages.scaled_pressure.press_abs <<
+						"\tpress_diff: " << current_messages.scaled_pressure.press_diff <<
+						"\ttemperature: " << ((double)current_messages.scaled_pressure.temperature / 100.0) <<
+						std::endl;
+					break;
+				}
+
 				default:
 				{
 					printf("Warning, did not handle message id %i\n",message.msgid);
