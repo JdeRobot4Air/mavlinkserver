@@ -457,6 +457,27 @@ read_messages()
 					break;
 				}
 
+				case MAVLINK_MSG_ID_RC_CHANNELS_RAW:
+				{
+					std::cout << "MAVLINK_MSG_ID_RC_CHANNELS_RAW:" << std::endl;
+					mavlink_msg_rc_channels_raw_decode(&message, &(current_messages.rc_channels_raw));
+					current_messages.time_stamps.rc_channels_raw = get_time_usec();
+					this_timestamps.rc_channels_raw = current_messages.time_stamps.rc_channels_raw;
+					std::cout <<
+						"\tport: " << (int)current_messages.rc_channels_raw.port <<
+						"\tchan1_raw: " << current_messages.rc_channels_raw.chan1_raw <<
+						"\tchan2_raw: " << current_messages.rc_channels_raw.chan2_raw <<
+						"\tchan3_raw: " << current_messages.rc_channels_raw.chan3_raw <<
+						"\tchan4_raw: " << current_messages.rc_channels_raw.chan4_raw <<
+						"\tchan5_raw: " << current_messages.rc_channels_raw.chan5_raw <<
+						"\tchan6_raw: " << current_messages.rc_channels_raw.chan6_raw <<
+						"\tchan7_raw: " << current_messages.rc_channels_raw.chan7_raw <<
+						"\tchan8_raw: " << current_messages.rc_channels_raw.chan8_raw <<
+						"\trssi: " << (int)current_messages.rc_channels_raw.rssi <<
+						std::endl;
+					break;
+				}
+
 				default:
 				{
 					printf("Warning, did not handle message id %i\n",message.msgid);
