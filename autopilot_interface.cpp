@@ -498,6 +498,25 @@ read_messages()
 					break;
 				}
 
+				case MAVLINK_MSG_ID_VFR_HUD:
+				{
+					std::cout << "MAVLINK_MSG_ID_VFR_HUD:" << std::endl;
+					mavlink_msg_vfr_hud_decode(&message, &(current_messages.vfr_hud));
+					current_messages.time_stamps.vfr_hud = get_time_usec();
+					this_timestamps.vfr_hud = current_messages.time_stamps.vfr_hud;
+					std::cout <<
+						"\tairspeed: " << current_messages.vfr_hud.airspeed <<
+						"\tgroundspeed: " << current_messages.vfr_hud.groundspeed <<
+						"\theading: " << current_messages.vfr_hud.heading <<
+						std::endl;
+					std::cout <<
+						"\tthrottle: " << current_messages.vfr_hud.throttle <<
+						"\talt: " << current_messages.vfr_hud.alt <<
+						"\tclimb: " << current_messages.vfr_hud.climb <<
+						std::endl;
+					break;
+				}
+
 				default:
 				{
 					printf("Warning, did not handle message id %i\n",message.msgid);
