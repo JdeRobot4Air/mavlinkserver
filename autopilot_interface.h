@@ -157,6 +157,7 @@ struct Time_Stamps
 	uint64_t scaled_pressure;
   uint64_t rc_channels_raw;
   uint64_t servo_output_raw;
+  uint64_t vfr_hud;
 
 	void
 	reset_timestamps()
@@ -178,6 +179,7 @@ struct Time_Stamps
     scaled_pressure = 0;
     rc_channels_raw = 0;
     servo_output_raw = 0;
+    vfr_hud = 0;
 	}
 
 };
@@ -231,6 +233,7 @@ struct Mavlink_Messages {
   mavlink_scaled_pressure_t scaled_pressure;
   mavlink_rc_channels_raw_t rc_channels_raw;
   mavlink_servo_output_raw_t servo_output_raw;
+  mavlink_vfr_hud_t vfr_hud;
 
 	// Time Stamps
 	Time_Stamps time_stamps;
