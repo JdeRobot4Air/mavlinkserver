@@ -517,6 +517,18 @@ read_messages()
 					break;
 				}
 
+				case MAVLINK_MSG_ID_MISSION_CURRENT:
+				{
+					std::cout << "MAVLINK_MSG_ID_MISSION_CURRENT: ";
+					mavlink_msg_mission_current_decode(&message, &(current_messages.mission_current));
+					current_messages.time_stamps.mission_current = get_time_usec();
+					this_timestamps.mission_current = current_messages.time_stamps.mission_current;
+					std::cout <<
+						"seq: " << current_messages.mission_current.seq <<
+						std::endl;
+					break;
+				}
+
 				default:
 				{
 					printf("Warning, did not handle message id %i\n",message.msgid);

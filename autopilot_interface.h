@@ -158,6 +158,7 @@ struct Time_Stamps
   uint64_t rc_channels_raw;
   uint64_t servo_output_raw;
   uint64_t vfr_hud;
+  uint64_t mission_current;
 
 	void
 	reset_timestamps()
@@ -180,6 +181,7 @@ struct Time_Stamps
     rc_channels_raw = 0;
     servo_output_raw = 0;
     vfr_hud = 0;
+    mission_current = 0;
 	}
 
 };
@@ -234,6 +236,7 @@ struct Mavlink_Messages {
   mavlink_rc_channels_raw_t rc_channels_raw;
   mavlink_servo_output_raw_t servo_output_raw;
   mavlink_vfr_hud_t vfr_hud;
+  mavlink_mission_current_t mission_current;
 
 	// Time Stamps
 	Time_Stamps time_stamps;
