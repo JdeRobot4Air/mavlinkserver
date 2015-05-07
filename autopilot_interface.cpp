@@ -347,10 +347,29 @@ read_messages()
 
 				case MAVLINK_MSG_ID_ATTITUDE:
 				{
-					//std::cout << "MAVLINK_MSG_ID_ATTITUDE" << std::endl;
+          vector4d quaternion;
+					std::cout << "MAVLINK_MSG_ID_ATTITUDE" << std::endl;
 					mavlink_msg_attitude_decode(&message, &(current_messages.attitude));
 					current_messages.time_stamps.attitude = get_time_usec();
 					this_timestamps.attitude = current_messages.time_stamps.attitude;
+          quaternion_from_euler(&quaternion, current_messages.attitude.roll,
+            current_messages.attitude.pitch, current_messages.attitude.yaw);
+					std::cout <<
+						"\troll: " << current_messages.attitude.roll <<
+						"\tpitch: " << current_messages.attitude.pitch <<
+						"\tyaw: " << current_messages.attitude.yaw <<
+						std::endl;
+					std::cout <<
+						"\trollspeed: " << current_messages.attitude.rollspeed <<
+						"\tpitchspeed: " << current_messages.attitude.pitchspeed <<
+						"\tyawspeed: " << current_messages.attitude.yawspeed <<
+						std::endl;
+					std::cout <<
+						"\tqx: " << quaternion.x <<
+						"\tqy: " << quaternion.y <<
+						"\tqz: " << quaternion.z <<
+						"\tqw: " << quaternion.w <<
+						std::endl;
 					break;
 				}
 
