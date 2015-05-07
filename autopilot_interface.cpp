@@ -55,6 +55,7 @@
 #include <iostream>
 
 #include "autopilot_interface.h"
+#include "quaternion.h"
 
 // ----------------------------------------------------------------------------------
 //   Time
@@ -422,14 +423,23 @@ read_messages()
 
 				case MAVLINK_MSG_ID_NAV_CONTROLLER_OUTPUT:
 				{
+          vector4d quaternion;
 					std::cout << "MAVLINK_MSG_ID_NAV_CONTROLLER_OUTPUT:" << std::endl;
 					mavlink_msg_nav_controller_output_decode(&message, &(current_messages.nav_controller_output));
 					current_messages.time_stamps.nav_controller_output = get_time_usec();
 					this_timestamps.nav_controller_output = current_messages.time_stamps.nav_controller_output;
+          quaternion_from_euler(&quaternion, current_messages.nav_controller_output.nav_roll,
+              current_messages.nav_controller_output.nav_pitch, current_messages.nav_controller_output.nav_bearing);
 					std::cout <<
 						"\tnav_roll: " << current_messages.nav_controller_output.nav_roll <<
 						"\tnav_pitch: " << current_messages.nav_controller_output.nav_pitch <<
 						"\tnav_bearing: " << current_messages.nav_controller_output.nav_bearing <<
+						std::endl;
+					std::cout <<
+						"\tqx: " << quaternion.x <<
+						"\tqy: " << quaternion.y <<
+						"\tqz: " << quaternion.z <<
+						"\tqw: " << quaternion.w <<
 						std::endl;
 					std::cout <<
 						"\ttarget_bearing: " << current_messages.nav_controller_output.target_bearing <<

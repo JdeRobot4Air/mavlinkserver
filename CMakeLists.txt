@@ -3,6 +3,7 @@ set(SOURCE_FILES
 	mavlinkserver.cpp
 	autopilot_interface.cpp
 	serial_port.cpp
+	quaternion.c
 )
 
 # Include headers from this paths
